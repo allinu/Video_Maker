@@ -194,7 +194,7 @@ def make_bgm(
     while True:
         if flag == 1:
             break
-        for music_path in music_path_list:
+        for music_path in track(music_path_list, description="读取拼接BGM..."):
             _music = AudioSegment.from_file(music_path)
             after_music_time = before_music_time + _music.duration_seconds * 1000
 
@@ -215,7 +215,7 @@ def make_bgm(
                 console.log("当前的时长为： {}ms".format(after_music_time))
                 before_music_time = after_music_time
                 all_music = all_music + _music
-                # INFO 处理两个视频拼接时的细节
+                # TODO 处理两个视频拼接时的细节
     bgm = all_music
     fade_in_time, fade_out_time = fade_time
     bgm.fade_in(fade_in_time).fade_out(fade_out_time)
@@ -399,7 +399,7 @@ def circle_clip(
             __r = (pow(x, 2) + pow(y, 2))**0.5
             if __r < r:
                 p_tmp[i - (_r - r), j - (_r - r)] = p_origin[i, j]
-    save_path = tmp_store_path + '/' + 'circle_avater.' + prefix
+    save_path = tmp_store_path + '/' + 'circle_avater.' + 'png'
     tmp_image.save(save_path)
     console.log("头像处理完毕")
     console.log(f'头像路径为({save_path})')

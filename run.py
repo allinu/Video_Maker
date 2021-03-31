@@ -84,18 +84,29 @@ def main():
     if mkdirs(output_dir):
         console.log(output_dir + "创建成功")
 
+    # INFO 获取P站信息及图片
     avater_url = ""
-    if des_text == "":
-        info = get_user_info()
-        region = info.profile.region
-        name = info.user.name
-        avater_url = info.user.profile_image_urls.medium
-        des_text = name
-
-    # INFO 获取P站图片
-
     if if_pixiv:
+        if des_text == "":
+            info = get_user_info()
+            # region = info.profile.region
+            name = info.user.name
+            avater_url = info.user.profile_image_urls.medium
+            des_text = name
         get_all_img()
+    else:
+        if des_text == "":
+            console.log("请输入视频描述信息")
+            exit(1)
+        images = []
+        images = read_dir(images_dir)
+        musics = read_dir(bgm_dir)
+        if images == []:
+            console.log("请放置图片文件")
+            exit(2)
+        if musics == []:
+            console.log("请放置BGM文件")
+            exit(3)
 
     img_paths = read_dir(images_dir)
     for img_file in track(img_paths, description="调整图片中..."):

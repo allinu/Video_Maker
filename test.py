@@ -29,8 +29,9 @@ def get_img_feature(img_path: str, edge: int) -> dict:
     """
     # TODO 转换色彩模式,更好地检测边缘,兼容相似颜色范围
     origin_img = cv2.imread(img_path)
+    origin_img = cv2.cvtColor(origin_img, cv2.COLOR_RGB2GRAY)
     tmp_img = cv2.imread(img_path)
-    (w, h, z_index) = origin_img.shape
+    (w, h) = origin_img.shape
     top_edge = []
     bottom_edge = []
     left_edge = []
@@ -58,14 +59,14 @@ def get_img_feature(img_path: str, edge: int) -> dict:
         l, r, t, b = counter, w - counter - 1, counter, h - counter - 1
         # INFO 自左至右的遍历像素获取左右边缘
         for i in range(l, r):
-            if (origin_img[i, t] != first_point).all():
+            if (origin_img[i, t] <= first_point):
                 if RESULTS['edge']['left'] != 0:
                     pass
                 else:
                     RESULTS['edge']['left'] = counter
             else:
                 tmp_img[i, t] = [255, 0, 0]
-            if (origin_img[i, b] != first_point).all():
+            if (origin_img[i, b] <= first_point):
                 if RESULTS['edge']['right'] != 0:
                     pass
                 else:
@@ -76,14 +77,14 @@ def get_img_feature(img_path: str, edge: int) -> dict:
             right_edge.append(origin_img[i, b])
         # INFO 自上至下的遍历像素获取上下边缘
         for i in range(t, b):
-            if (origin_img[l, i] != first_point).all():
+            if (origin_img[l, i] <= first_point):
                 if RESULTS['edge']['top'] == 0:
                     pass
                 else:
                     RESULTS['edge']['top'] = counter
             else:
                 tmp_img[l, i] = [0, 0, 255]
-            if (origin_img[r, i] != first_point).all():
+            if (origin_img[r, i] <= first_point):
                 if RESULTS['edge']['bottom'] == 0:
                     pass
                 else:
@@ -95,7 +96,7 @@ def get_img_feature(img_path: str, edge: int) -> dict:
             bottom_edge.append(origin_img[r, i])
 
         cv2.imshow("2", tmp_img)
-        cv2.waitKey(10)
+        cv2.waitKey(100)
         counter = counter + 1
 
     if counter <= edge:
@@ -108,6 +109,6 @@ def get_img_feature(img_path: str, edge: int) -> dict:
 
 if __name__ == "__main__":
     # img_path = "./src/images/87732624_p0.jpg"
-    img_path = "./src/images/86987197_p0_master1200.jpg"
+    img_path = "./src/images/69679589_p0_master1200.jpg"
     res = get_img_feature(img_path=img_path, edge=10)
     print(res)

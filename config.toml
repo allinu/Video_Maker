@@ -29,7 +29,7 @@ fps = 30
 [pixiv]
 pixiv = true
 # Pixiv的token(可选)
-api_token = ''
+api_token = 'ADpdU_RmJzHQ1-o_5o5ZXAhNx3HVAZqPhjgd-ZN2o8E'
 user_id = '8782286'
 avater_size = 300
 
